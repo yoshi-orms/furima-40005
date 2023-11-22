@@ -22,19 +22,20 @@
 
 | Column          | Type         | Options                        |
 | --------------- | ------------ | ------------------------------ |
+| name            | string       | null: false                    |
 | description     | text         | null: false                    |
-| category        | genre_id     | null: false                    |
-| condition       | genre_id     | null: false                    |
-| shipping_fee    | genre_id     | null: false                    |
-| prefecture      | genre_id     | null: false                    |
-| shipping_day    | genre_id     | null: false                    |
-| price           | decimal      | null: false                    |
+| category_id     | integer      | null: false                    |
+| condition_id    | integer      | null: false                    |
+| shipping_fee_id | integer      | null: false                    |
+| prefecture_id   | integer      | null: false                    |
+| shipping_day_id | integer      | null: false                    |
+| price           | integer      | null: false                    |
 | user            | references   | null: false, foreign_key: true |
 
 ### Association
 
 - belongs_to :user
-- belongs_to :order
+- has_many :orders
 
 ## orders テーブル
 
@@ -54,12 +55,13 @@
 
 | Column       | Type       | Options                        |
 | ------------ | ---------- | ------------------------------ |
-| zip_code     | genre_id   | null: false                    |
-| prefecture   | genre_id   | null: false                    |
+| zip_code     | string     | null: false                    |
+| prefecture_id| integer    | null: false                    |
 | city         | string     | null: false                    |
 | street       | string     | null: false                    |
 | building     | string     |                                |
 | phone_number | string     | null: false                    |
+| order        | references | null: false, foreign_key: true |
 
 
 ### Association
