@@ -5,8 +5,7 @@
 | Column             | Type   | Options                       |
 | ------------------ | ------ | ----------------------------- |
 | username           | string | null: false                   |
-| email              | string | null: false, uniqueness: true |
-| password           | string | null: false                   |
+| email              | string | null: false, unique: true     |
 | encrypted_password | string | null: false                   |
 | last_name          | string | null: false                   |
 | first_name         | string | null: false                   |
@@ -18,25 +17,24 @@
 
 - has_many :items
 - has_many :orders
-- has_one :address
 
 ## items テーブル
 
-| Column          | Type       | Options                        |
-| --------------- | ---------- | ------------------------------ |
-| image_url       | string     | null: false                    |
-| description     | text       | null: false                    |
-| category        | string     | null: false                    |
-| condition       | string     | null: false                    |
-| shipping_fee    | string     | null: false                    |
-| prefecture      | string     | null: false                    |
-| shipping_day    | string     | null: false                    |
-| price           | decimal    | null: false                    |
+| Column          | Type         | Options                        |
+| --------------- | ------------ | ------------------------------ |
+| description     | text         | null: false                    |
+| category        | genre_id     | null: false                    |
+| condition       | genre_id     | null: false                    |
+| shipping_fee    | genre_id     | null: false                    |
+| prefecture      | genre_id     | null: false                    |
+| shipping_day    | genre_id     | null: false                    |
+| price           | decimal      | null: false                    |
+| user            | references   | null: false, foreign_key: true |
 
 ### Association
 
 - belongs_to :user
-- has_many :orders
+- belongs_to :order
 
 ## orders テーブル
 
@@ -50,19 +48,20 @@
 
 - belongs_to :item
 - belongs_to :user
+- has_one :address
 
 ## addresses テーブル
 
 | Column       | Type       | Options                        |
 | ------------ | ---------- | ------------------------------ |
-| zip_code     | string     | null: false                    |
-| prefecture   | string     | null: false                    |
+| zip_code     | genre_id   | null: false                    |
+| prefecture   | genre_id   | null: false                    |
 | city         | string     | null: false                    |
 | street       | string     | null: false                    |
-| building     | string     | null: false                    |
+| building     | string     |                                |
 | phone_number | string     | null: false                    |
 
 
 ### Association
 
-- belongs_to :user
+- belongs_to :order
