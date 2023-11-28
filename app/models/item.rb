@@ -1,7 +1,5 @@
 class Item < ApplicationRecord
   extend ActiveHash::Associations::ActiveRecordExtensions
-  def sold_out?
-  end
 
   belongs_to :category
   belongs_to :condition
