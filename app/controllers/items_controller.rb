@@ -44,7 +44,5 @@ class ItemsController < ApplicationController
 
   def set_item
     @item = Item.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    redirect_to new_user_session_path
   end
 end
