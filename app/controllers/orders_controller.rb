@@ -2,16 +2,16 @@ class OrdersController < ApplicationController
   before_action :find_item
 
   def index
-    @order = OrderAddress.new
+    @order_address = OrderAddress.new
   end
 
   def create
-    @order = OrderAddress.new(order_params)
-    if @order.valid?
-      @order.save
+    @order_address = OrderAddress.new(order_params)
+    if @order_address.valid?
+      @order_address.save
       redirect_to item_orders_path(@item)
     else
-      render :index
+      render :index, status: :unprocessable_entity
     end
   end
 
