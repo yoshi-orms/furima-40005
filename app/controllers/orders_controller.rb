@@ -9,7 +9,7 @@ class OrdersController < ApplicationController
     @order_address = OrderAddress.new(order_params)
     if @order_address.valid?
       @order_address.save
-      redirect_to item_orders_path(@item)
+      redirect_to root_path
     else
       render :index, status: :unprocessable_entity
     end
