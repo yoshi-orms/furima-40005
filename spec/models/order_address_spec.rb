@@ -2,123 +2,64 @@ require 'rails_helper'
 
 RSpec.describe OrderAddress, type: :model do
   before do
-    @order_address = FactoryBot.build(:order_address)
+    @user = FactoryBot.create(:user)
+    @item = FactoryBot.create(:item)
+    @order_address = FactoryBot.build(:order_address, user_id: @user.id, item_id: @item.id)
   end
 
   describe '商品購入機能' do
     context '商品購入できるとき' do
-      it 'imageとnameとdescriptionとcategory_idとcondition_idとshipping_fee_idとprefecture_idとshipping_day_idとpriceが存在すれば登録できる' do
-        expect(@item).to be_valid
+      it 'zip_codeとprefecture_idとcityとstreetとbuildingとphone_numberが存在すれば購入できる' do
+        expect(@order_address).to be_valid
       end
     end
 
-    context '商品出品できないとき' do
-      it ' 商品画像を1枚つけないと出品できない' do
-        @item.image = nil
-        @item.valid?
-        expect(@item.errors.full_messages).to include "Image can't be blank"
+    context '商品購入できないとき' do
+      it ' 郵便番号が必須であること' do
+        @order_address.zip_code = ''
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include "Zip code can't be blank"
       end
 
-      it '商品名がないと出品できない' do
-        @item.name = ''
-        @item.valid?
-        expect(@item.errors.full_messages).to include "Name can't be blank"
+      it ' 郵便番号は、「3桁ハイフン4桁」の半角文字列のみ保存可能なこと' do
+        @order_address.zip_code = '1234567'
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include "Zip code is invalid"
       end
 
-      it '商品説明がないと出品できない' do
-        @item.description = ''
-        @item.valid?
-        expect(@item.errors.full_messages).to include "Description can't be blank"
+      it ' 都道府県が必須であること' do
+        @order_address.prefecture_id = nil
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include "Prefecture is not a number"
       end
 
-      it 'カテゴリーの情報が必須であること' do
-        @item.category_id = nil
-        @item.valid?
-        expect(@item.errors.full_messages).to include "Category is not a number"
+      it ' 市区町村が必須であること' do
+        @order_address.city = ''
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include "City can't be blank"
       end
 
-      it '商品の状態の情報が必須であること' do
-        @item.condition_id = nil
-        @item.valid?
-        expect(@item.errors.full_messages).to include "Condition is not a number"
+      it ' 番地が必須であること' do
+        @order_address.street = ''
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include "Street can't be blank"
       end
 
-      it '配送料の負担の情報が必須であること' do
-        @item.shipping_fee_id = nil
-        @item.valid?
-        expect(@item.errors.full_messages).to include "Shipping fee is not a number"
+      it ' 建物名は任意であること' do
+        @order_address.building = ''
+        expect(@order_address).to be_valid
       end
 
-      it '発送元の地域の情報が必須であること' do
-        @item.prefecture_id = nil
-        @item.valid?
-        expect(@item.errors.full_messages).to include "Prefecture is not a number"
+      it ' 電話番号が必須であること' do
+        @order_address.phone_number = ''
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include "Phone number can't be blank"
       end
 
-      it ' 発送までの日数の情報が必須であること' do
-        @item.shipping_day_id = nil
-        @item.valid?
-        expect(@item.errors.full_messages).to include "Shipping day is not a number"
-      end
-
-      it '価格の情報が必須であること' do
-        @item.price = ''
-        @item.valid?
-        expect(@item.errors.full_messages).to include "Price can't be blank"
-      end
-
-      it '価格は、¥300以下では出品出来ないこと' do
-        @item.price = '200'
-        @item.valid?
-        expect(@item.errors.full_messages).to include "Price must be greater than or equal to 300"
-      end
-
-      it ' 価格は半角数値のみ保存可能であること' do
-        @item.price = '三百円'
-        @item.valid?
-        expect(@item.errors.full_messages).to include "Price is not a number"
-      end
-
-      it ' カテゴリーに「---」が選択されている場合は出品できない' do
-        @item.category_id = 1
-        @item.valid?
-        expect(@item.errors.full_messages).to include "Category must be other than 1"
-      end
-
-      it ' 商品の状態に「---」が選択されている場合は出品できない' do
-        @item.condition_id = 1
-        @item.valid?
-        expect(@item.errors.full_messages).to include "Condition must be other than 1"
-      end
-
-      it ' 配送料の負担に「---」が選択されている場合は出品できない' do
-        @item.shipping_fee_id = 1
-        @item.valid?
-        expect(@item.errors.full_messages).to include "Shipping fee must be other than 1"
-      end
-
-      it ' 発送元の地域に「---」が選択されている場合は出品できない' do
-        @item.prefecture_id = 1
-        @item.valid?
-        expect(@item.errors.full_messages).to include "Prefecture must be other than 1"
-      end
-
-      it ' 発送までの日数に「---」が選択されている場合は出品できない' do
-        @item.shipping_day_id = 1
-        @item.valid?
-        expect(@item.errors.full_messages).to include "Shipping day must be other than 1"
-      end
-
-      it ' userが紐付いていなければ出品できない' do
-        @item.user = nil
-        @item.valid?
-        expect(@item.errors.full_messages).to include "User must exist"
-      end
-
-      it '価格は、¥9,999,999以上では出品出来ないこと' do
-        @item.price = '10000000'
-        @item.valid?
-        expect(@item.errors.full_messages).to include "Price must be less than or equal to 9999999"
+      it ' 電話番号は、10桁以上11桁以内の半角数値のみ保存可能なこと' do
+        @order_address.phone_number = '090-1234-5678'
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include "Phone number is invalid"
       end
     end
   end
