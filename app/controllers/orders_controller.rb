@@ -18,7 +18,11 @@ class OrdersController < ApplicationController
 private
 
   def find_item
-    @item = Item.find(params[:item_id])
+    @item = Item.find_by(id: params[:item_id])
+
+    if @item.nil?
+      redirect_to root_path
+    end
   end
 
   def order_params
