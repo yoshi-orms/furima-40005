@@ -20,7 +20,7 @@ private
   def find_item
     @item = Item.find_by(id: params[:item_id])
 
-    if @item.nil?
+    if @item.nil? || (@item.user_id == current_user.id)
       redirect_to root_path
     end
   end
