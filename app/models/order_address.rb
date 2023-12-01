@@ -14,6 +14,7 @@ class OrderAddress
   def save
     # 各テーブルにデータを保存する処理を書く
     order = Order.create(user_id: user_id, item_id: item_id)
+    order_id = order.id
 
     Address.create(
       zip_code: zip_code,
