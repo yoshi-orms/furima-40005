@@ -20,8 +20,10 @@ private
   def find_item
     @item = Item.find_by(id: params[:item_id])
 
-    if @item.nil? || (@item.user_id == current_user.id)
+    if @item.nil? || (user_signed_in? && @item.user_id == current_user.id)
       redirect_to root_path
+    elsif !user_signed_in?
+      redirect_to new_user_session_path
     end
   end
 
