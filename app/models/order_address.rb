@@ -10,6 +10,7 @@ class OrderAddress
   validates :city, presence: true
   validates :street, presence: true
   validates :phone_number, presence: true, format: { with: PHONE_NUMBER_FORMAT }
+  validates :token, presence: true
 
   def save
     # 各テーブルにデータを保存する処理を書く
