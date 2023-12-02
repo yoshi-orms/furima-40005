@@ -11,9 +11,10 @@ class OrderAddress
   validates :street, presence: true
   validates :phone_number, presence: true, format: { with: PHONE_NUMBER_FORMAT }
   validates :token, presence: true
+  validates :user_id, presence: true
+  validates :item_id, presence: true
 
   def save
-    # 各テーブルにデータを保存する処理を書く
     order = Order.create(user_id: user_id, item_id: item_id)
     order_id = order.id
 
