@@ -1,6 +1,6 @@
 class OrderAddress
   include ActiveModel::Model
-  attr_accessor :zip_code, :prefecture_id, :city, :street, :building, :phone_number, :user_id, :item_id
+  attr_accessor :zip_code, :prefecture_id, :city, :street, :building, :phone_number, :user_id, :item_id, :token
 
   ZIP_CODE_FORMAT = /\A\d{3}-\d{4}\z/.freeze
   PHONE_NUMBER_FORMAT = /\A\d{10,11}\z/.freeze
