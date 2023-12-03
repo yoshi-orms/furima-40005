@@ -7,12 +7,8 @@ class OrderAddress
 
   validates :zip_code, presence: true, format: { with: ZIP_CODE_FORMAT }
   validates :prefecture_id, numericality: { other_than: 1 }
-  validates :city, presence: true
-  validates :street, presence: true
+  validates :city, :street, :token, :user_id, :item_id, presence: true
   validates :phone_number, presence: true, format: { with: PHONE_NUMBER_FORMAT }
-  validates :token, presence: true
-  validates :user_id, presence: true
-  validates :item_id, presence: true
 
   def save
     order = Order.create(user_id: user_id, item_id: item_id)
